@@ -50,12 +50,13 @@ try:
 
         if type == "CHECK":
             results = handle.check(pin)
-            if result[0] is True:
-                resp = dict(type=type, status=result[1])
+            log.info(results)
+	    if results[0] is True:
+                resp = dict(type=type, status=results[1])
                 sock.sendall(json.dumps(resp))
                 log.debug('sent resp to server, %s' % json.dumps(resp))
             else:
-                resp = dict(type=type, status=result[1], info=result[2])
+                resp = dict(type=type, status=results[1], info=results[2])
                 sock.sendall(json.dumps(resp))
                 log.debug('sent resp to server, %s' % json.dumps(resp))
 
