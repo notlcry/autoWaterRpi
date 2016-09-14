@@ -14,7 +14,8 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pin = 14
 
 # Connect the socket to the port where the server is listening
-server_address = ('localhost', 8007)
+# server_address = ('45.120.159.147', 8007)
+server_address = ('192.168.1.221', 8007)
 sock.connect(server_address)
 
 try:
