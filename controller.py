@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 import traceback
 
 def start(pin):
