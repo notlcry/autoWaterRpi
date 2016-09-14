@@ -18,6 +18,8 @@ pin = 14
 server_address = ('192.168.1.221', 8007)
 sock.connect(server_address)
 
+log.info("connect server successful.")
+
 try:
     # Send data
     # message = 'I am online.'
@@ -40,33 +42,33 @@ try:
             if result is True:
                 resp = dict(type=type, result='SUCCESS')
                 sock.sendall(json.dumps(resp))
-                log.debug('sent resp to server, %s', json.dumps(resp))
+                log.debug('sent resp to server, %s' % json.dumps(resp))
             else:
                 resp = dict(type=type, result='FAIL', info="start relay fail, please check the connection.")
                 sock.sendall(json.dumps(resp))
-                log.debug('sent resp to server, %s', json.dumps(resp))
+                log.debug('sent resp to server, %s' % json.dumps(resp))
 
         if type == "CHECK":
             results = handle.check(pin)
             if result[0] is True:
                 resp = dict(type=type, status=result[1])
                 sock.sendall(json.dumps(resp))
-                log.debug('sent resp to server, %s', json.dumps(resp))
+                log.debug('sent resp to server, %s' % json.dumps(resp))
             else:
                 resp = dict(type=type, status=result[1], info=result[2])
                 sock.sendall(json.dumps(resp))
-                log.debug('sent resp to server, %s', json.dumps(resp))
+                log.debug('sent resp to server, %s' % json.dumps(resp))
 
         if type == "STOP":
             result = handle.stop(pin)
             if result is True:
                 resp = dict(type=type, result='SUCCESS')
                 sock.sendall(json.dumps(resp))
-                log.debug('sent resp to server, %s', json.dumps(resp))
+                log.debug('sent resp to server, %s' % json.dumps(resp))
             else:
                 resp = dict(type=type, result='FAIL', info="stop relay fail, please check the connection.")
                 sock.sendall(json.dumps(resp))
-                log.debug('sent resp to server, %s', json.dumps(resp))
+                log.debug('sent resp to server, %s' % json.dumps(resp))
 
 except Exception as exp:
             log.error(exp.message)
