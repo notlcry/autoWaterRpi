@@ -4,14 +4,20 @@ import log
 
 def start(pin):
     log.info('begin starting.')
-    controller.start(pin)
+    rtn = controller.start(pin)
+    log.info('finish start')
+    return rtn
 
 
 def check(pin):
     log.info('begin checking.')
-    controller.check(pin)
+    rtn = controller.check(pin)
+    log.info('finish check')
+    return rtn
 
 
 def stop(pin):
     log.info('begin stopping.')
-    controller.stop(pin)
+    rtn = controller.stop(pin)
+    log.info('finish stop')
+    return rtn
