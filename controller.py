@@ -40,8 +40,8 @@ def check(pin):
         elif rtn is GPIO.OUT:
             status = 'ON'
 
-        returns = [True, status]
+        returns = True, status
     except Exception as exp:
         traceback.print_exc()
-        returns = [False, 'UNKNOWN', exp.message]
+        returns = False, 'UNKNOWN', exp.message
     return returns
