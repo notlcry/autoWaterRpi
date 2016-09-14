@@ -1,15 +1,17 @@
 import controller
+import log
 
 
-def start():
-    print "I am starting"
-    controller.start()
+def start(pin):
+    log.info('begin starting.')
+    controller.start(pin)
 
 
-def check():
-    print "I am checking"
+def check(pin):
+    log.info('begin checking.')
+    controller.check(pin)
 
 
-def stop():
-    print "I am stopping"
-    controller.stop()
+def stop(pin):
+    log.info('begin stopping.')
+    controller.stop(pin)

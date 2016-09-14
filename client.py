@@ -1,50 +1,77 @@
 import socket
-import sys
+import traceback
 import handle
 import log
+import json
 
 __author__ = 'Barry'
 
 # Create a TCP/IP socket
-log.logger.info("Start to connecting server.")
+log.info("Start to connecting server.")
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# first set 14 pin
+pin = 14
 
 # Connect the socket to the port where the server is listening
 server_address = ('localhost', 8007)
-print >>sys.stderr, 'connecting to %s port %s' % server_address
 sock.connect(server_address)
 
 try:
-
     # Send data
-    message = 'I am online.'
-    print >>sys.stderr, 'sending "%s"' % message
-    sock.sendall(message)
+    # message = 'I am online.'
 
     # Look for the response
-
     while True:
-        data = sock.recv(16)
-        print >>sys.stderr, 'received "%s"' % data
+        data = sock.recv(1024)
+        log.info('received "%s"' % data)
 
         if data.__len__() == 0:
             break
 
-        if data == "START":
-            handle.start()
+        receive = json.loads(data)
 
-        if data == "CHECK":
-            result = handle.check()
+        type = receive['type']
+
+        if type == "START":
+            log.debug('start...')
+            result = handle.start(pin)
             if result is True:
-                sock.sendall('Status:ON')
+                resp = dict(type=type, result='SUCCESS')
+                sock.sendall(json.dumps(resp))
+                log.debug('sent resp to server, %s', json.dumps(resp))
             else:
-                sock.sendall('Status:OFF')
+                resp = dict(type=type, result='FAIL', info="start relay fail, please check the connection.")
+                sock.sendall(json.dumps(resp))
+                log.debug('sent resp to server, %s', json.dumps(resp))
 
-        if data == "STOP":
-            handle.stop()
+        if type == "CHECK":
+            results = handle.check(pin)
+            if result[0] is True:
+                resp = dict(type=type, status=result[1])
+                sock.sendall(json.dumps(resp))
+                log.debug('sent resp to server, %s', json.dumps(resp))
+            else:
+                resp = dict(type=type, status=result[1], info=result[2])
+                sock.sendall(json.dumps(resp))
+                log.debug('sent resp to server, %s', json.dumps(resp))
 
+        if type == "STOP":
+            result = handle.stop(pin)
+            if result is True:
+                resp = dict(type=type, result='SUCCESS')
+                sock.sendall(json.dumps(resp))
+                log.debug('sent resp to server, %s', json.dumps(resp))
+            else:
+                resp = dict(type=type, result='FAIL', info="stop relay fail, please check the connection.")
+                sock.sendall(json.dumps(resp))
+                log.debug('sent resp to server, %s', json.dumps(resp))
+
+except Exception as exp:
+            log.error(exp.message)
+            traceback.print_exc()
 finally:
-    print >>sys.stderr, 'closing socket'
+    log.info('closing socket')
     sock.close()
 
 

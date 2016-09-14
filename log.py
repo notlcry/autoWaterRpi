@@ -17,6 +17,23 @@ ch.setFormatter(formatter)
 # add ch to logger
 logger.addHandler(ch)
 
+
+def debug(message):
+    logger.debug(message)
+
+
+def info(message):
+    logger.info(message)
+
+
+def warn(message):
+    logger.warn(message)
+
+
+def error(message):
+    logger.error(message)
+
+
 # 'application' code
 # logger.debug('debug message')
 # logger.info('info message')
